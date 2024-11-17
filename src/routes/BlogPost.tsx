@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { BlogPost } from '../pages/Post';
 import { useBlogStore } from '../store/useBlogStore';
-import { SkeletonPostCard } from '../components/blogSkeleton';
+import { SkeletonPostCard } from '../components';
 
 const Wrapper: React.FC = () => {
   const { id } = useParams<{ id: string }>();

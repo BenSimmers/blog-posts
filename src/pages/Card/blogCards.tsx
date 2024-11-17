@@ -1,7 +1,6 @@
 import React from 'react';
-import { Card } from '../../components/card';
+import { Card, SkeletonCard } from '../../components';
 import { PostsProps } from '../../types/types';
-import { SkeletonCard } from '../../components/loading';
 
 export const BlogCards: React.FunctionComponent<PostsProps> = ({ blogPosts }) => {
   const renderContent = () => {
