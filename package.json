@@ -1,6 +1,6 @@
 {
-  "name": "typescript-vite-react-app",
-  "version": "0.0.2",
+  "name": "blog-posts",
+  "version": "0.0.0",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -9,8 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx,.js",
     "lint:fix": "eslint . --ext .ts,.tsx,.js --fix",
     "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "postinstall": "vite build"
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@eslint/object-schema": "^2.1.4",
@@ -41,7 +40,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-watch": "^8.0.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.4.49",
     "prettier": "^3.3.3",
