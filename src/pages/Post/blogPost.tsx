@@ -1,6 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import { BlogPostProps } from '../../types/types';
+import { BlogPostProps } from '../../types';
 
 export const BlogPost: React.FunctionComponent<BlogPostProps> = ({ post }) => (
   <div className="flex flex-col mb-4 mt-4">

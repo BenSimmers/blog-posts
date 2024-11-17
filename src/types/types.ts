@@ -16,8 +16,10 @@ type BlogPostProps = {
 
 type Store = {
   blogPosts: Post[];
-  status: 'idle' | 'loading' | 'failed';
+  status: 'idle' | 'loading' | 'success' | 'error';
+  error: string | null;
   setBlogPosts: (blogPosts: Post[]) => void;
+  setError: (error: string) => void;
   selectPostById: (id: number) => Post | undefined;
 };
 

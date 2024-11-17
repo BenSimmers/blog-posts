@@ -1,3 +1,5 @@
-const Wrapper: React.FunctionComponent = () => <>Home Page</>;
+import { Home } from '../pages/Home';
+
+const Wrapper: React.FunctionComponent = () => <Home />;
 
 export default Wrapper;
