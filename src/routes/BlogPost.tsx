@@ -3,18 +3,13 @@ import { useParams } from 'react-router';
 import { BlogPost } from '../pages/Post';
 import { useBlogStore } from '../store/useBlogStore';
 import { SkeletonPostCard } from '../components/blogSkeleton';
-import { ErrorMessage } from '../components/error';
 
 const Wrapper: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const postId = id ? Number.parseInt(id, 10) : 0;
 
-  const { selectPostById, error } = useBlogStore();
+  const { selectPostById } = useBlogStore();
   const post = selectPostById(postId);
-
-  if (error) {
-    return <ErrorMessage isData={!!post} message={error} />;
-  }
 
   if (!post) {
     return <SkeletonPostCard />;
