@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, SkeletonCard } from '../../components';
-import { PostsProps } from '../../types/types';
+import { useStoreContext } from '../../app/hooks/useStoreContext';
 
-export const BlogCards: React.FunctionComponent<PostsProps> = ({ blogPosts }) => {
+export const BlogCards: React.FunctionComponent = () => {
+  const { blogPosts } = useStoreContext();
+
   const renderContent = () => {
     const items: ((typeof blogPosts)[number] | null)[] = blogPosts.length
       ? blogPosts
