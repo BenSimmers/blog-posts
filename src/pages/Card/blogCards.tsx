@@ -1,12 +1,13 @@
 import React from 'react';
-import { Card, SkeletonCard } from '../../components';
-import { useStoreContext } from '../../app/hooks/useStoreContext';
+import { useBlogPosts } from '../../hooks/useBlogPosts';
+import { SkeletonCard } from '../../components/skeletons';
+import { Card } from '../../components/card';
 
 export const BlogCards: React.FunctionComponent = () => {
-  const { blogPosts } = useStoreContext();
+  const { blogs: blogPosts } = useBlogPosts();
 
   const renderContent = () => {
-    const items: ((typeof blogPosts)[number] | null)[] = blogPosts.length
+    const items = blogPosts.length
       ? blogPosts
       : Array.from({ length: 4 }).map(() => null);
 

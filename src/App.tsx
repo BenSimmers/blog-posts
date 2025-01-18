@@ -1,25 +1,49 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Navigation } from './navigation';
 
-const Home = React.lazy(() => import('./routes/Home'));
-const Posts = React.lazy(() => import('./routes/Posts'));
-const BlogPost = React.lazy(() => import('./routes/BlogPost'));
+const simulateDelay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const Home = React.lazy(() => simulateDelay(0).then(() => import('./routes/Home')));
+const Posts = React.lazy(() => simulateDelay(0).then(() => import('./routes/Posts')));
+const BlogPost = React.lazy(() => simulateDelay(0).then(() => import('./routes/BlogPost')));
+
+const FullPageSkeleton: React.FC = () => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="text-center">
+        <svg
+          className="animate-spin h-10 w-10 text-gray-600 mx-auto"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <p className="text-gray-600 mt-2">Loading...</p>
+      </div>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleMenu: () => void = (): void => setIsOpen((prev) => !prev);
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 flex flex-col min-h-screen">
       <Router>
         <Navigation isOpen={isOpen} toggleMenu={toggleMenu} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/posts/:id" element={<BlogPost />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
-        </Routes>
+        <div className="flex-grow">
+          <Suspense fallback={<FullPageSkeleton />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/posts" element={<Posts />} />
+              <Route path="/posts/:id" element={<BlogPost />} />
+              <Route path="*" element={<h1>404 Not Found</h1>} />
+            </Routes>
+          </Suspense>
+        </div>
       </Router>
     </div>
   );

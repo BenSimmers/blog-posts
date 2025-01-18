@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Post } from '../types';
+import { Post } from '../../types';
 
 export const Card: React.FunctionComponent<Pick<Post, 'id' | 'title' | 'author' | 'date_published'>> = ({
   id,
