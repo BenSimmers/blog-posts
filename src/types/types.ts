@@ -6,15 +6,5 @@ type Post = {
   content: string;
 };
 
-export type Status = 'idle' | 'loading' | 'success' | 'error';
 
-interface BlogStore {
-  blogPosts: Post[];
-  status: Status;
-  error: string | null;
-  setBlogPosts: (blogPosts: Post[]) => void;
-  setError: (error: string) => void;
-  selectPostById: (id: number) => Post | undefined;
-}
-
-export type { Post, BlogStore };
+export type { Post };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { db } from '../modules/auth/data';
 
 type NavLink = {
   to: string;
@@ -9,12 +10,9 @@ type NavLink = {
 type NavProps = {
   isOpen: boolean;
   toggleMenu: () => void;
+  navLinks: NavLink[];
+  email?: string;
 };
-
-const navLinks: NavLink[] = [
-  { to: '/', text: 'Home' },
-  { to: '/posts', text: 'Posts' },
-];
 
 const MenuIcon = () => (
   <svg
@@ -42,24 +40,43 @@ const CloseIcon = () => (
   </svg>
 );
 
-const NavLinks: React.FunctionComponent = () => (
+type NavLinksProps = {
+  navLinks: NavLink[];
+  email: string;
+  logOut: VoidFunction;
+};
+const NavLinks: React.FunctionComponent<NavLinksProps> = ({ navLinks, email, logOut }) => (
+
   <div className="flex items-center space-x-4">
-    {navLinks.map(({ to, text }) => (
-      <Link key={to} to={to} className="text-gray-700 hover:text-gray-900">
-        {text}
+    {email ? (
+      <>
+        {navLinks.map(({ to, text }) => (
+          <Link key={to} to={to} className="text-gray-700 hover:text-gray-900">
+            {text}
+          </Link>
+        ))}
+        <Link to="/" className="text-gray-700 hover:text-gray-900" onClick={logOut}>
+          Sign Out
+        </Link>
+
+        <p className='text-gray-500'>{email}</p>
+      </>
+    ) : (
+      <Link to="/login" className="text-gray-700 hover:text-gray-900">
+        Login
       </Link>
-    ))}
+    )}
   </div>
 );
 
-export const Navigation: React.FC<NavProps> = ({ isOpen, toggleMenu }) => (
+export const Navigation: React.FC<NavProps> = ({ isOpen, toggleMenu, navLinks, email }) => (
   <nav className="border-b-2 border-black">
     <div className="flex items-center justify-between h-16">
       <Link to="/" className="text-gray-700 drop-shadow-xl text-xl font-bold">
         Blog Posts
       </Link>
       <div className="hidden md:block">
-        <NavLinks />
+        <NavLinks navLinks={navLinks} email={email ?? ''} logOut={() => db.auth.signOut()} />
       </div>
       <div className="-mr-2 flex md:hidden">
         <button
@@ -76,7 +93,7 @@ export const Navigation: React.FC<NavProps> = ({ isOpen, toggleMenu }) => (
     </div>
     <div className={`${isOpen ? 'block' : 'hidden'} md:hidden`} id="mobile-menu">
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <NavLinks />
+        <NavLinks navLinks={navLinks} email={email ?? ''} logOut={() => db.auth.signOut()} />
       </div>
     </div>
   </nav>

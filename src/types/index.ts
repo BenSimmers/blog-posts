@@ -1,1 +1,1 @@
-export type { Post, BlogStore } from './types';
+export type { Post } from './types';

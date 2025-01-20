@@ -1,8 +1,11 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { Suspense, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, RouteProps, Navigate, Outlet } from 'react-router-dom';
 import { Navigation } from './navigation';
+import { useAuth } from './modules/auth/useAuth';
+import { db } from './modules/auth/data';
+import { Login } from './modules/auth/auth';
 
-const simulateDelay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const simulateDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const Home = React.lazy(() => simulateDelay(0).then(() => import('./routes/Home')));
 const Posts = React.lazy(() => simulateDelay(0).then(() => import('./routes/Posts')));
 const BlogPost = React.lazy(() => simulateDelay(0).then(() => import('./routes/BlogPost')));
@@ -26,26 +29,51 @@ const FullPageSkeleton: React.FC = () => {
   );
 };
 
+const navLinks = [
+  { to: '/', text: 'Home' },
+  { to: '/posts', text: 'Posts' },
+  { to: '/login', text: 'Login' },
+];
+
+
+
+export const InstantAuth = () => {
+  const { isLoading, user, error } = db.useAuth();
+  if (isLoading) return <FullPageSkeleton />;
+  if (error) return <h1>Error: {error.message}</h1>;
+  if (user) return <Navigate to="/posts" />;
+  return <Login />;
+};
+
+const ProtectedRoute: React.FC = () => {
+  const { user } = useAuth();
+  return user ? <Outlet /> : <Navigate to="/login" />;
+};
+
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleMenu: () => void = (): void => setIsOpen((prev) => !prev);
+  const { user } = useAuth();
 
   return (
-    <div className="container mx-auto px-4 flex flex-col min-h-screen">
-      <Router>
-        <Navigation isOpen={isOpen} toggleMenu={toggleMenu} />
+    <Router>
+      <div className="container mx-auto px-4 flex flex-col min-h-screen">
+        <Navigation isOpen={isOpen} toggleMenu={toggleMenu} navLinks={navLinks} email={user?.email} />
         <div className="flex-grow">
           <Suspense fallback={<FullPageSkeleton />}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/posts" element={<Posts />} />
-              <Route path="/posts/:id" element={<BlogPost />} />
+              <Route path="/login" element={<InstantAuth />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/posts" element={<Posts />} />
+                <Route path="/posts/:id" element={<BlogPost />} />
+              </Route>
               <Route path="*" element={<h1>404 Not Found</h1>} />
             </Routes>
           </Suspense>
         </div>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 };
 

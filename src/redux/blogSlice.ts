@@ -1,15 +1,8 @@
 import { createSlice, createAsyncThunk, createEntityAdapter, EntityState } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { Post } from '../types';
 
 const url = import.meta.env.VITE_URL as string;
-
-interface Post {
-  id: number;
-  date_published: string;
-  title: string;
-  author: string;
-  content: string;
-}
 
 enum StatusEnum {
   IDLE = 'idle',
