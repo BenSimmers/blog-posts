@@ -1,5 +1,5 @@
-import React, { Suspense, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, RouteProps, Navigate, Outlet } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { Navigation } from './navigation';
 import { useAuth } from './modules/auth/useAuth';
 import { db } from './modules/auth/data';
